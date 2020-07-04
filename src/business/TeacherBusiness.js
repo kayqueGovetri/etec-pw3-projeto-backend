@@ -1,4 +1,4 @@
-import Teacher from '../models/Teacher'
+import Teacher from '../models/Teacher.js'
 
 export default class TeacherBusiness{
   async index(){

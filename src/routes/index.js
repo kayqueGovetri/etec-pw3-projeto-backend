@@ -1,5 +1,6 @@
-import routes from '../config/routes.config'
+import routes from '../config/routes.config.js'
+import Teacher from './Teacher/index.js'
 
-require('./Teacher/index')(routes)
+Teacher()(routes)
 
-module.exports = routes
+export default routes

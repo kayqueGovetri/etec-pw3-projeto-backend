@@ -1,4 +1,4 @@
-import TeacherBusiness from '../business/TeacherBusiness'
+import TeacherBusiness from '../business/TeacherBusiness.js'
 
 export default class TeacherController extends TeacherBusiness{
   async index(req,res){

@@ -1,5 +1,5 @@
-import {Router} from 'express'
+import express from 'express'
 
-const routes = Router()
+const routes = express.Router()
 
-module.exports = routes
+export default routes

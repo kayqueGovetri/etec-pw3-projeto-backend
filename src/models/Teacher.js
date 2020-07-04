@@ -1,4 +1,4 @@
-import mongoose from '../database/index'
+import mongoose from '../database/index.js'
 
 const { Schema } = mongoose
 
