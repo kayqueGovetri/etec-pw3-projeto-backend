@@ -7,4 +7,6 @@ mongoose.connect('mongodb://localhost:27017/projetoPw3',{
   useFindAndModify: false,
 })
 
+console.log('connected')
+
 export default mongoose;

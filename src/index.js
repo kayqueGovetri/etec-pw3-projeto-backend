@@ -8,5 +8,4 @@ app.use(express.urlencoded({extended: false}))
 app.use(routesTeacher)
 
 app.listen(3000)
-
 export default app
