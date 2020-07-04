@@ -1,0 +1,26 @@
+{
+  "name": "projetoPw3",
+  "version": "1.0.0",
+  "description": "Projeto de pw3",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/govetriKayque/etec-pw3-projeto-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/govetriKayque/etec-pw3-projeto-backend/issues"
+  },
+  "homepage": "https://github.com/govetriKayque/etec-pw3-projeto-backend#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.21"
+  }
+}
