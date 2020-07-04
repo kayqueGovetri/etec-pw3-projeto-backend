@@ -13,6 +13,6 @@ const TeacherSchema = new Schema({
 
 }, { timestamps: true })
 
-const Teacher = model('Teacher', TeacherSchema)
+const Teacher = mongoose.model('Teacher', TeacherSchema)
 
 export default Teacher
