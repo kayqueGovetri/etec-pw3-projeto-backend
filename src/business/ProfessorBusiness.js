@@ -1,6 +1,6 @@
-import Teacher from '../models/Teacher.js'
+import Professor from '../models/Professor.js'
 
-export default class TeacherBusiness{
+export default class ProfessorBusiness{
   async index(){
     try{
       const Teachers = await Teacher.find()
