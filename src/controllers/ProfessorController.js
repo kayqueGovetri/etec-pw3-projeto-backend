@@ -1,6 +1,6 @@
-import TeacherBusiness from '../business/TeacherBusiness.js'
+import ProfessorBusiness from '../business/ProfessorBusiness.js'
 
-export default class TeacherController extends TeacherBusiness{
+export default class ProfessorController extends ProfessorBusiness{
   async index(req,res){
     try{
       return res.status(200).json({teste: 'teste'})
