@@ -12,6 +12,6 @@ const ProfessorSchema = new Schema({
 
 }, { timestamps: true })
 
-const Professor = mongoose.model('Professor', TeacherSchema)
+const Professor = mongoose.model('Professor', ProfessorSchema)
 
 export default Professor
