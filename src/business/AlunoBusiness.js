@@ -1,31 +1,30 @@
-import Turma from '../models/Turma.js'
+import Auluno from '../models/Aluno.js'
 import mongoose from '../database/index.js'
+import Aluno from '../models/Aluno.js'
 
-export default class TurmaBusiness{
+export default class AlunoBusiness{
 
   async index(){
     try{
-      const turmas = await Turma.aggregate()
+      const alunos = await Aluno.aggregate()
         .lookup({
-          from: 'alunos',
-          localField: '_alunos',
+          from: 'turmas',
+          localField: '_turma',
           foreignField: '_id',
-          as: 'Aluno'
-        })
-        .lookup({
-          from: 'aulas',
-          localField: '_aulas',
-          foreignField: '_id',
-          as: 'Aula'
+          as: 'Turma'
         })
         .project({
           _id: '$_id',
-          semestre: "$semestre",
-          curso: "$curso",
-          alunos: "$Aluno",
-          aulas: "$Aula"
+          cargaHoraria: "$cargaHoraria",
+          turma: {
+            _id: { $arrayElemAt: ['$Turma._id', -1] },
+            alunos: { $arrayElemAt: ['$Turma._alunos', -1] },
+            aulas: { $arrayElemAt: ['$Turma._aulas', -1] },
+            semestre: { $arrayElemAt: ['$Turma.semestre', -1] },
+            curso: { $arrayElemAt: ['$Turma.curso', -1] }
+          }
         })
-      return {turmas}
+      return {alunos}
     }catch(error){
       console.log(error)
       error.message = "Error in database"
@@ -43,26 +42,31 @@ export default class TurmaBusiness{
         throw error
       }
 
-      const response = await Turma.aggregate([{$match: { _id:mongoose.Types.ObjectId(_id) }}])
+      const response = await Aluno.aggregate([{$match: { _id:mongoose.Types.ObjectId(_id) }}])
       .lookup({
-        from: 'alunos',
-        localField: '_alunos',
+        from: 'turmas',
+        localField: '_turma',
         foreignField: '_id',
-        as: 'Aluno'
-      })
-      .lookup({
-        from: 'aulas',
-        localField: '_aulas',
-        foreignField: '_id',
-        as: 'Aula'
+        as: 'Turma'
       })
       .project({
         _id: '$_id',
-        semestre: "$semestre",
-        curso: "$curso",
-        alunos: "$Aluno",
-        aulas: "$Aula"
-
+        nome: "$nome",
+        telefone: "$telefone",
+        rm: "$rm",
+        dataNascimento: "$dataNascimento",
+        dataMatricula: "$dataMatricula",
+        cep: "$cep",
+        cpfResponsavel: "$cpfResponsavel",
+        email: "$email",
+        senha: "$senha",
+        turma: {
+          _id: { $arrayElemAt: ['$Turma._id', -1] },
+          alunos: { $arrayElemAt: ['$Turma._alunos', -1] },
+          aulas: { $arrayElemAt: ['$Turma._aulas', -1] },
+          semestre: { $arrayElemAt: ['$Turma.semestre', -1] },
+          curso: { $arrayElemAt: ['$Turma.curso', -1] }
+        }
       })
 
       if (!response) {
@@ -70,11 +74,12 @@ export default class TurmaBusiness{
         throw error
       }
 
-      return { turma: response[0] }
+      return { aluno: response[0] }
     } catch (error) {
       throw { error }
     }
   }
+
 
   async create(params = {}) {
     console.log(params)
@@ -90,26 +95,29 @@ export default class TurmaBusiness{
         }
       }
 
-      const { _alunos, _aulas, semestre, curso } = params
+      const { _turma, nome, telefone, rm, dataNascimento, dataMatricula, cep, cpfResponsavel, email, senha} = params
 
-      console.log(_aulas)
 
-      _aulas.map((aulas) => {
-        if (!mongoose.mongo.ObjectId.isValid(aulas)) {
-          error = { message: '_aulas não é um id válido!'}
-          throw error
-        }
-      });
+      if (!mongoose.mongo.ObjectId.isValid(_turma)) {
+        error = { message: '"_turma" não é um id válido!' }
+        throw error
+      }
 
-      const novaTurma = await Turma.create({
-        _alunos:(_alunos),
-        _aulas: (_aulas),
-        semestre,
-        curso
+      const novoAluno = await Aluno.create({
+        _turma: mongoose.Types.ObjectId(_turma),
+        nome,
+        telefone,
+        rm,
+        dataNascimento,
+        dataMatricula,
+        cep,
+        cpfResponsavel,
+        email,
+        senha
       })
 
       await session.commitTransaction()
-      return { novaTurma }
+      return { novoAluno }
     } catch (error) {
       await session.abortTransaction()
       throw { error }
@@ -122,8 +130,8 @@ export default class TurmaBusiness{
     const session = await mongoose.startSession()
     session.startTransaction()
     try {
-      const { turma } = params
-      const { _id } = turma
+      const { aluno } = params
+      const { _id } = aluno
 
       let error;
 
@@ -132,20 +140,17 @@ export default class TurmaBusiness{
         throw error
       }
 
-      const response = await Turma.findByIdAndUpdate({ _id }, turma)
-
-      console.log(_id)
-      console.log(turma)
+      const response = await Aluno.findByIdAndUpdate({ _id }, aluno)
 
       if (!response) {
-        error = { message: 'Turma não existe' }
+        error = { message: 'Aluno não existe' }
         throw error
       }
 
       await session.commitTransaction()
 
-      const novaTurma = await Turma.findOne({_id})
-      return { novaTurma }
+      const novoAluno = await Aluno.findOne({_id})
+      return { novoAluno }
     } catch (error) {
       await session.abortTransaction()
       throw { error }
@@ -153,6 +158,7 @@ export default class TurmaBusiness{
       session.endSession()
     }
   }
+
 
   async delete(params = {}){
     const session = await mongoose.startSession()
@@ -165,10 +171,10 @@ export default class TurmaBusiness{
         error = { message: '"_id" não é um id válido!' }
         throw error
       }
-      const turma = await Turma.findByIdAndDelete(_id)
+      const aluno = await Aluno.findByIdAndDelete(_id)
 
-      if(!turma){
-        error = { message: 'Turma não foi deletada!!' }
+      if(!aluno){
+        error = { message: 'Aluno não foi deletado!!' }
         throw error
       }
       await session.commitTransaction()

@@ -1,6 +1,7 @@
-import AulaBusiness from '../business/AulaBusiness.js'
+import AlunoBusiness from '../business/AlunoBusiness.js'
 
-export default class AulaController extends AulaBusiness{
+export default class extends AlunoBusiness{
+
   async index(req,res){
     try{
       const response = await super.index()
@@ -21,11 +22,12 @@ export default class AulaController extends AulaBusiness{
       return res.status(400).json(error)
     }
   }
+
   async create(req,res){
     try{
-      const { _professor, _materia, cargaHoraria  } = req.body
+      const { _turma, nome, telefone, rm, dataNascimento, dataMatricula, cep, cpfResponsavel, email, senha  } = req.body
       console.log(req.body)
-      const response = await super.create({ _professor, _materia, cargaHoraria })
+      const response = await super.create({ _turma, nome, telefone, rm, dataNascimento, dataMatricula, cep, cpfResponsavel, email, senha })
       return res.status(200).json(response)
     }catch(error){
       console.log(error)
@@ -35,15 +37,14 @@ export default class AulaController extends AulaBusiness{
 
   async update(req, res) {
     try {
-      const { aula } = req.body
-      const response = await super.update({ aula })
+      const { aluno } = req.body
+      const response = await super.update({ aluno })
       return res.status(200).send(response)
     } catch (err) {
       console.log(err)
       return res.status(400).send(err)
     }
   }
-
 
   async delete(req, res) {
     try {
