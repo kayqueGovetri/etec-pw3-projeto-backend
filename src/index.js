@@ -4,6 +4,7 @@ import routesMateria from './routes/Materia/index.js'
 import routesAula from './routes/Aula/index.js'
 import routesTurma from './routes/Turma/index.js'
 import routesAluno from './routes/Aluno/index.js'
+import routesNota from './routes/Nota/index.js'
 
 const app = express()
 
@@ -14,6 +15,7 @@ app.use(routesMateria)
 app.use(routesAula)
 app.use(routesTurma)
 app.use(routesAluno)
+app.use(routesNota)
 
 app.listen(3000)
 export default app
