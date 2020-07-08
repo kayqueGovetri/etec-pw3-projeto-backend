@@ -1,4 +1,4 @@
-import TurmaBusiness from '../business/AulaBusiness.js'
+import TurmaBusiness from '../business/TurmaBusiness.js'
 
 export default class TurmaController extends TurmaBusiness{
 
@@ -26,7 +26,7 @@ export default class TurmaController extends TurmaBusiness{
     try{
       const { _aulas, _alunos, semestre, curso  } = req.body
       console.log(req.body)
-      const response = await super.create({ _aulas, _alunos, semestre, curso })
+      const response = await super.create({ _alunos, _aulas, semestre, curso })
       return res.status(200).json(response)
     }catch(error){
       console.log(error)
@@ -36,7 +36,7 @@ export default class TurmaController extends TurmaBusiness{
 
   async update(req, res) {
     try {
-      const { aula } = req.body
+      const { turma } = req.body
       const response = await super.update({ turma })
       return res.status(200).send(response)
     } catch (err) {
