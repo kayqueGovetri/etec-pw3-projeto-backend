@@ -1,4 +1,4 @@
-import Auluno from '../models/Aluno.js'
+
 import mongoose from '../database/index.js'
 import Aluno from '../models/Aluno.js'
 

@@ -5,7 +5,7 @@ import routesAula from './routes/Aula/index.js'
 import routesTurma from './routes/Turma/index.js'
 import routesAluno from './routes/Aluno/index.js'
 import routesNota from './routes/Nota/index.js'
-
+import routesUsuario from './routes/Usuario/index.js'
 const app = express()
 
 app.use(express.json())
@@ -16,6 +16,6 @@ app.use(routesAula)
 app.use(routesTurma)
 app.use(routesAluno)
 app.use(routesNota)
-
+app.use(routesUsuario)
 app.listen(3000)
 export default app
