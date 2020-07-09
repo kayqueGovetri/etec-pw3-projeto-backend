@@ -1,6 +1,6 @@
 import routes from '../../config/routes.config.js'
 import TurmaController from '../../controllers/TurmaController.js'
-
+import auth from '../../middleware/auth.js'
 const turmaController = new TurmaController()
 
 routes.get('/turmas',auth, turmaController.index)
