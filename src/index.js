@@ -17,5 +17,5 @@ app.use(routesTurma)
 app.use(routesAluno)
 app.use(routesNota)
 app.use(routesUsuario)
-app.listen(3000)
+app.listen(process.env.PORT || 3000)
 export default app
