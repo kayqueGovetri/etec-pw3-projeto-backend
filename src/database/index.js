@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-mongoose.connect('mongodb://localhost:27017/projetoPw3',{
+mongoose.connect('mongodb+srv://admin:projetoluis-etec@cluster0.pv2rc.mongodb.net/etec-pw3-projeto-database?retryWrites=true&w=majority',{
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
