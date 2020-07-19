@@ -8,6 +8,6 @@ routes.get('/usuarios', auth, usuarioController.show)
 routes.post('/usuario', usuarioController.create)
 routes.delete('/usuario', auth, usuarioController.delete)
 routes.put('/usuario', auth, usuarioController.update)
-
+routes.post('/login', usuarioController.login)
 
 export default routes
