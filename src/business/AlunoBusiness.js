@@ -7,22 +7,30 @@ export default class AlunoBusiness{
   async index(){
     try{
       const alunos = await Aluno.aggregate()
-        .lookup({
-          from: 'turmas',
-          localField: '_turma',
-          foreignField: '_id',
-          as: 'Turma'
-        })
-        .project({
-          _id: '$_id',
-          cargaHoraria: "$cargaHoraria",
-          turma: {
-            _id: { $arrayElemAt: ['$Turma._id', -1] },
-            alunos: { $arrayElemAt: ['$Turma._alunos', -1] },
-            aulas: { $arrayElemAt: ['$Turma._aulas', -1] },
-            semestre: { $arrayElemAt: ['$Turma.semestre', -1] },
-            curso: { $arrayElemAt: ['$Turma.curso', -1] }
-          }
+      .lookup({
+        from: 'turmas',
+        localField: '_turma',
+        foreignField: '_id',
+        as: 'Turma'
+      })
+      .project({
+        _id: '$_id',
+        nome: "$nome",
+        telefone: "$telefone",
+        rm: "$rm",
+        dataNascimento: "$dataNascimento",
+        dataMatricula: "$dataMatricula",
+        cep: "$cep",
+        cpfResponsavel: "$cpfResponsavel",
+        email: "$email",
+        senha: "$senha",
+        turma: {
+          _id: { $arrayElemAt: ['$Turma._id', -1] },
+          alunos: { $arrayElemAt: ['$Turma._alunos', -1] },
+          aulas: { $arrayElemAt: ['$Turma._aulas', -1] },
+          semestre: { $arrayElemAt: ['$Turma.semestre', -1] },
+          curso: { $arrayElemAt: ['$Turma.curso', -1] }
+        }
         })
       return {alunos}
     }catch(error){
