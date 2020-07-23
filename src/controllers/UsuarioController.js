@@ -57,7 +57,9 @@ export default class extends UsuarioBusiness{
 
   async login(req, res) {
     try {
+      console.log(req.params)
       const { email, senha } = req.body
+      console.log({ email, senha });
       const response = await super.login({ email, senha })
       return res.status(200).send(response)
     } catch (err) {

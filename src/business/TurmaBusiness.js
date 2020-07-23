@@ -94,12 +94,12 @@ export default class TurmaBusiness{
 
       console.log(_aulas)
 
-      _aulas.map((aulas) => {
-        if (!mongoose.mongo.ObjectId.isValid(aulas)) {
-          error = { message: '_aulas não é um id válido!'}
-          throw error
-        }
-      });
+      // _aulas.map((aulas) => {
+      //   if (!mongoose.mongo.ObjectId.isValid(aulas)) {
+      //     error = { message: '_aulas não é um id válido!'}
+      //     throw error
+      //   }
+      // });
 
       const novaTurma = await Turma.create({
         _alunos:(_alunos),

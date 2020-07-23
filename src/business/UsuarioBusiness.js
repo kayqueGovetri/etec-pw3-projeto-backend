@@ -55,7 +55,7 @@ export default class UsuarioBusiness{
       }
 
       const { email, senha, roles} = params
-      
+
       const exists = await Usuario.findOne({ email })
 
       if (exists) {
@@ -65,7 +65,7 @@ export default class UsuarioBusiness{
 
       const cipher = crypto.createCipher('aes256', 'projetoPw3', 'hex');
       cipher.update(senha)
-  
+
       const novoUsuario = await Usuario.create({
          senha: cipher.final('hex'),
          email,
@@ -77,7 +77,7 @@ export default class UsuarioBusiness{
       })
 
       novoUsuario.token = token
-      
+
       await novoUsuario.save()
       await session.commitTransaction()
       return { novoUsuario }
@@ -156,6 +156,8 @@ export default class UsuarioBusiness{
       let error
       const { email, senha } = params
 
+      console.log(email, senha)
+
       if (!email || !senha) {
         error = { message: 'Email/Senha não foi passado' }
         throw error
@@ -164,8 +166,12 @@ export default class UsuarioBusiness{
       const usuario = await Usuario.findOne({email})
 
       const decipher = crypto.createDecipher('aes256', 'projetoPw3');
+
       decipher.update(usuario.senha, 'hex');
+
       const senhaDescriptografada = decipher.final().toString()
+      console.log("teste")
+
 
       if(!(senhaDescriptografada === senha)){
         error = { message: 'Login não foi efetuado com sucesso!' }
@@ -175,6 +181,7 @@ export default class UsuarioBusiness{
       const token = jwt.sign({ id: usuario._id }, 'projetoluispw3', {
         expiresIn: 86400,
       })
+
 
       usuario.token = token
       await usuario.save()
