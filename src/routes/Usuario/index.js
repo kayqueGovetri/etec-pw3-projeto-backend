@@ -9,5 +9,6 @@ routes.post('/usuario', usuarioController.create)
 routes.delete('/usuario', auth, usuarioController.delete)
 routes.put('/usuario', auth, usuarioController.update)
 routes.get('/', (req,res) => {return res.status(200).json({teste : "teste"})})
+routes.post('/login', usuarioController.login)
 
 export default routes
