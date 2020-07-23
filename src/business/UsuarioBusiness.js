@@ -2,7 +2,7 @@ import Usuario from '../models/Usuario.js'
 import mongoose from '../database/index.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-
+import crypto from 'crypto'
 
 export default class UsuarioBusiness{
 
@@ -55,18 +55,19 @@ export default class UsuarioBusiness{
       }
 
       const { email, senha, roles} = params
-      
+
       const exists = await Usuario.findOne({ email })
 
       if (exists) {
-        err = { message: 'Usuario já existe!' }
-        throw err
+        error = { message: 'Usuario já existe!' }
+        throw error
       }
 
-      const senhaCriptografada = await bcrypt.hash(senha, 10)
+      const cipher = crypto.createCipher('aes256', 'projetoPw3', 'hex');
+      cipher.update(senha)
 
       const novoUsuario = await Usuario.create({
-         senha: senhaCriptografada,
+         senha: cipher.final('hex'),
          email,
          roles
       })
@@ -76,7 +77,7 @@ export default class UsuarioBusiness{
       })
 
       novoUsuario.token = token
-      
+
       await novoUsuario.save()
       await session.commitTransaction()
       return { novoUsuario }
@@ -150,4 +151,44 @@ export default class UsuarioBusiness{
     }
   }
 
+  async login(params = {}) {
+    try {
+      let error
+      const { email, senha } = params
+
+      console.log(email, senha)
+
+      if (!email || !senha) {
+        error = { message: 'Email/Senha não foi passado' }
+        throw error
+      }
+
+      const usuario = await Usuario.findOne({email})
+
+      const decipher = crypto.createDecipher('aes256', 'projetoPw3');
+
+      decipher.update(usuario.senha, 'hex');
+
+      const senhaDescriptografada = decipher.final().toString()
+      console.log("teste")
+
+
+      if(!(senhaDescriptografada === senha)){
+        error = { message: 'Login não foi efetuado com sucesso!' }
+        throw error
+      }
+
+      const token = jwt.sign({ id: usuario._id }, 'projetoluispw3', {
+        expiresIn: 86400,
+      })
+
+
+      usuario.token = token
+      await usuario.save()
+      usuario.senha = undefined
+      return usuario
+    } catch (error) {
+      throw { error }
+    }
+  }
 }

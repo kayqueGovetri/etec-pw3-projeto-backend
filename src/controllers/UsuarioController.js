@@ -54,4 +54,17 @@ export default class extends UsuarioBusiness{
       return res.status(400).send(err)
     }
   }
+
+  async login(req, res) {
+    try {
+      console.log(req.params)
+      const { email, senha } = req.body
+      console.log({ email, senha });
+      const response = await super.login({ email, senha })
+      return res.status(200).send(response)
+    } catch (err) {
+      console.log(err)
+      return res.status(400).send(err)
+    }
+  }
 }
